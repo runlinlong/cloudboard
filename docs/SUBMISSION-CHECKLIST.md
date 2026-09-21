@@ -7,8 +7,8 @@ Use actual evidence, not planned features. This AI-generated draft is subject to
 | Description of the application | README; explain features in your own words |
 | Architecture, component mapping and principles | README diagram and ARCHITECTURE.md review draft |
 | Benefits, challenges, business implications, security | ARCHITECTURE.md; distinguish present and proposed controls |
-| Source repository, including Kubernetes code | Public repository URL, to be verified before submission |
-| 5–10 minute recording | Actual uploaded recording and accessible link; VIDEO-PLAN.md is only preparation |
+| Source repository, including Kubernetes code | Verified public repository: https://github.com/runlinlong/cloudboard |
+| 5–10 minute recording | Local 9:22 reference video is ready and not uploaded; student will record and submit their own final video |
 | Two different REST microservices | Dashboard and Tasks; show dashboard's programmatic call to task API |
 | Kubernetes execution and outside access | Pods/Services ready and localhost:18081 browser demonstration |
 | Independent horizontal scaling | Both Deployments can be scaled separately; verify-kubernetes.ps1 |

@@ -16,8 +16,9 @@ Date: 2026-09-22. This file records observed results and must be updated as addi
 | PostgreSQL Pod replacement persistence | A unique task survived rollout restart of only the project database Deployment |
 | Dedicated Kubernetes node restart persistence | A unique task survived restart of cloudboard-coursework-control-plane; old container ID/status unchanged |
 | Real browser interaction | Edge/Playwright: create, move through both statuses, reload, delete, literal XSS input, mobile width check; no page errors |
-| GitHub repository | Pending |
-| 5–10 minute student demonstration recording | Not recorded |
+| GitHub repository | Source uploaded to https://github.com/runlinlong/cloudboard |
+| Local automated reference video | Generated: 9 minutes 22 seconds, 1280×800 MP4, synthetic English narration; complete audio/video decode check passed; not uploaded |
+| Final student demonstration recording | Student will re-record personally using the local reference; not yet submitted |
 
 Original environment was inspected read-only: existing Home Assistant container `strange_kirch` was already exited when inspected. No command in this project stops, removes, reconfigures or starts that container, prunes Docker data, resets Docker/WSL, or edits the global kubeconfig. New workloads share host CPU/memory/disk and may affect available resources.
 
@@ -30,3 +31,7 @@ An ordinary local node restart is not a proof of survival after cluster deletion
 - Both are Linux/amd64 images. Running Pod image IDs were checked against these registry digests.
 
 Raw local evidence is saved under `artifacts/`: `kubernetes-tests.txt`, `browser-tests.txt`, `scaling-persistence.txt`, `node-restart.txt`, `kubernetes-status.txt`, `deployed-images.txt`, `tasks-logs.txt`, `dashboard-logs.txt`, and desktop/mobile screenshots. Generated files are not automatically committed to the source repository.
+
+Selected non-secret text outputs are also published in [docs/evidence](evidence/README.md). Both Docker Hub repositories returned `is_private: false` from the unauthenticated public API; the GitHub repository returned `private: false`.
+
+The local video is `artifacts/cloudboard-demo.mp4` (16,485,948 bytes). Measured duration: 562.32 seconds. It contains actual browser interactions, command-output captures, YAML excerpts, independent scaling and database replacement. Audio is synthetic narration; it is not a recording of the student speaking. A local transcript is in `artifacts/video-transcript.md`. Neither video nor transcript was uploaded, as requested. Final deployment counts were rechecked at 2 dashboard, 2 task and 1 PostgreSQL replicas.

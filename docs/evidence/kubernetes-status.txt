@@ -1,0 +1,19 @@
+NAME                        READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/dashboard   2/2     2            2           31m
+deployment.apps/postgres    1/1     1            1           31m
+deployment.apps/tasks       2/2     2            2           31m
+
+NAME                             READY   STATUS    RESTARTS      AGE
+pod/dashboard-5754998989-2nfcq   1/1     Running   1 (42s ago)   31m
+pod/dashboard-5754998989-ptwrn   1/1     Running   1 (42s ago)   31m
+pod/postgres-cf8c7fd8f-ccpr4     1/1     Running   1 (42s ago)   2m10s
+pod/tasks-5fb8499dff-g2gl9       1/1     Running   1 (42s ago)   31m
+pod/tasks-5fb8499dff-gk2g6       1/1     Running   1 (42s ago)   31m
+
+NAME                TYPE        CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
+service/dashboard   NodePort    10.96.144.157   <none>        80:30080/TCP   31m
+service/postgres    ClusterIP   10.96.153.137   <none>        5432/TCP       31m
+service/tasks       ClusterIP   10.96.63.40     <none>        8001/TCP       31m
+
+NAME                                  STATUS   VOLUME                                     CAPACITY   ACCESS MODES   STORAGECLASS   VOLUMEATTRIBUTESCLASS   AGE
+persistentvolumeclaim/postgres-data   Bound    pvc-ebc9f246-ab87-475a-99ca-fabb33589e7b   1Gi        RWO            standard       <unset>                 31m

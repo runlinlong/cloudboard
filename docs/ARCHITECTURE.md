@@ -15,7 +15,7 @@ Cloudboard lets a small project team create tasks with priorities, move them thr
 | Task domain logic / persistence adapter | Tasks | Validates task input, exposes CRUD REST endpoints, executes parameterized SQL |
 | Persistent data store | PostgreSQL | Separate single-replica database Deployment, internal Service, mounted PVC |
 
-The two Python services run in separate images and Deployments. They do not share source imports at runtime, process memory, filesystem task data or browser sessions. PostgreSQL speaks its database protocol, not REST; the task API is the REST interface over the store. The database exception is the conventional interpretation of the brief's separate database requirement; confirm with the examiner if they expect a REST facade as an additional database component.
+The two Python services run in separate images and Deployments. They do not share source imports at runtime, process memory, filesystem task data or browser sessions. Both application microservices expose REST APIs. PostgreSQL is the separate storage component; the task service accesses it using SQL and exposes the task data through REST.
 
 ## Interaction and patterns
 

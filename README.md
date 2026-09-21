@@ -2,6 +2,8 @@
 
 A small task board built from two Python REST microservices and a separate PostgreSQL database. Create tasks, choose a priority, move tasks between To do / In progress / Done, and see completion statistics in a browser.
 
+Source: [runlinlong/cloudboard](https://github.com/runlinlong/cloudboard). Images: [task service](https://hub.docker.com/r/runlinlong/cloudboard-tasks) and [dashboard service](https://hub.docker.com/r/runlinlong/cloudboard-dashboard). On the configured local machine: [open the Kubernetes application](http://127.0.0.1:18081).
+
 **AI-assisted project draft for review.** Source code, configuration, and documents in this project were generated with AI assistance. Read [the disclosure](docs/AI-DISCLOSURE.md) and your course policy before using any part in a submission. Review is not a substitute for a policy that prohibits AI-generated source code.
 
 ## Components
@@ -127,6 +129,8 @@ This is a local classroom demonstration: **no login, authorization, TLS, tenancy
 
 ## Repository and final delivery
 
-No remote URL is implied by this folder. Create a public GitHub repository under your account, then push the reviewed source. `.env`, `.venv`, `.local`, IDE files and generated artifacts are excluded by `.gitignore`.
+The public source repository is https://github.com/runlinlong/cloudboard. `.env`, `.venv`, `.local`, IDE files and generated artifacts are excluded by `.gitignore`.
 
 Pending submission items are listed in [SUBMISSION-CHECKLIST.md](docs/SUBMISSION-CHECKLIST.md). Record an actual 5–10 minute demonstration yourself; the video plan is not a recording.
+
+A 9:22 automated reference recording with synthetic narration is available **locally only** at `artifacts/cloudboard-demo.mp4`, with a local transcript at `artifacts/video-transcript.md`. It was not uploaded. The student plans to record their own final explanation using this reference. See [the delivery index](docs/DELIVERY.md).

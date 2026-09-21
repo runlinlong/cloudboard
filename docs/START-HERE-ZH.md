@@ -24,6 +24,16 @@ Python 解释器：`F:\pycharm\project\cloud\.venv\Scripts\python.exe`。
 
 本项目的 Kubernetes 浏览器地址：**http://127.0.0.1:18081**。
 
+在 Docker Desktop 里，本作业的 Kubernetes 节点容器叫 `cloudboard-coursework-control-plane`，它内部运行上述服务。另一个作业的 `strange_kirch` 不属于本项目。三个名称以 `cloudboard-coursework-` 开头的 Compose 调试容器目前已停止，用于节省资源；不需要启动它们来访问 Kubernetes 版本。
+
+下次使用时，如果 Docker Desktop 已正常运行，但本项目的节点容器处于停止状态，可以只启动这个已存在的节点：
+
+```powershell
+docker start cloudboard-coursework-control-plane
+```
+
+等待约半分钟再访问 18081。不要删除或重新创建现有集群来“启动”项目，否则可能丢失本地数据库。
+
 另一个地址 http://127.0.0.1:18080 是可选的 Compose 调试环境；如果它被停止，不影响 18081 上的 Kubernetes 演示。两个环境的数据库彼此独立。
 
 如果 18081 打不开，先在 PyCharm Terminal 进入项目目录，运行：

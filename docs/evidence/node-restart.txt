@@ -1,0 +1,3 @@
+PASS: data survived restart of cloudboard-coursework-control-plane.
+PASS: original strange_kirch container ID and status unchanged.
+No Docker Desktop engine restart, WSL restart, or old-container operation was performed.

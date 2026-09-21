@@ -1,6 +1,6 @@
 # 7–8 minute demonstration plan
 
-Preparation guide, not a recording or a script to claim as independent work. Explain the design in your own words after understanding it. Record the actual running cluster and your browser. Do not show `.env`, kubeconfig contents, account tokens or password dialogs.
+Preparation guide, not a script to claim as independent work. An automated reference recording with synthetic narration is provided locally in `artifacts/cloudboard-demo.mp4` and is not uploaded. The student will record a separate final submission video. Explain the design in your own words after understanding it. Record the actual running cluster and your browser. Do not show `.env`, kubeconfig contents, account tokens or password dialogs.
 
 | Time | Show | Explain |
 |---|---|---|
