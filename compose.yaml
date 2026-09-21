@@ -1,0 +1,66 @@
+name: cloudboard-coursework
+services:
+  postgres:
+    image: postgres:17-bookworm
+    environment:
+      POSTGRES_DB: cloudboard
+      POSTGRES_USER: cloudboard
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?Run scripts/init-local.ps1 first}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U cloudboard -d cloudboard"]
+      interval: 5s
+      timeout: 3s
+      retries: 12
+    mem_limit: 256m
+    cpus: 0.5
+  tasks:
+    image: cloudboard-tasks:dev
+    build:
+      context: .
+      dockerfile: services/tasks/Dockerfile
+    environment:
+      DB_HOST: postgres
+      DB_NAME: cloudboard
+      DB_USER: cloudboard
+      DB_PASSWORD: ${DB_PASSWORD:?Run scripts/init-local.ps1 first}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8001/readyz', timeout=3)"]
+      interval: 10s
+      timeout: 4s
+      retries: 8
+      start_period: 15s
+    mem_limit: 192m
+    cpus: 0.5
+  dashboard:
+    image: cloudboard-dashboard:dev
+    build:
+      context: .
+      dockerfile: services/dashboard/Dockerfile
+    environment:
+      TASKS_URL: http://tasks:8001
+    ports: ["127.0.0.1:18080:8000"]
+    depends_on:
+      tasks:
+        condition: service_healthy
+    read_only: true
+    tmpfs: [/tmp]
+    security_opt: ["no-new-privileges:true"]
+    cap_drop: [ALL]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/healthz', timeout=3)"]
+      interval: 10s
+      timeout: 4s
+      retries: 5
+    mem_limit: 192m
+    cpus: 0.5
+volumes:
+  postgres-data:

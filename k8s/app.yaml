@@ -1,0 +1,230 @@
+# The database password is supplied by scripts/deploy.ps1, never committed here.
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cloudboard-config
+  namespace: cloudboard
+data:
+  DB_HOST: postgres
+  DB_NAME: cloudboard
+  DB_USER: cloudboard
+  TASKS_URL: http://tasks:8001
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: postgres-data
+  namespace: cloudboard
+spec:
+  accessModes: [ReadWriteOnce]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: cloudboard
+spec:
+  replicas: 1
+  # A single database process owns this data directory.
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        seccompProfile:
+          type: RuntimeDefault
+      containers:
+        - name: postgres
+          image: postgres:17-bookworm
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: cloudboard
+            - name: POSTGRES_USER
+              value: cloudboard
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: DB_PASSWORD
+            - name: PGDATA
+              value: /var/lib/postgresql/data/pgdata
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+          startupProbe:
+            exec:
+              command: [pg_isready, -U, cloudboard, -d, cloudboard]
+            periodSeconds: 3
+            failureThreshold: 40
+          readinessProbe:
+            exec:
+              command: [pg_isready, -U, cloudboard, -d, cloudboard]
+            periodSeconds: 5
+          livenessProbe:
+            exec:
+              command: [pg_isready, -U, cloudboard, -d, cloudboard]
+            periodSeconds: 10
+            failureThreshold: 6
+          resources:
+            requests: {cpu: 100m, memory: 128Mi}
+            limits: {cpu: 500m, memory: 256Mi}
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: postgres-data
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres
+  namespace: cloudboard
+spec:
+  selector: {app: postgres}
+  ports:
+    - port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: tasks
+  namespace: cloudboard
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: tasks}
+  template:
+    metadata:
+      labels: {app: tasks}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: tasks
+          image: __TASKS_IMAGE__
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8001
+          envFrom:
+            - configMapRef: {name: cloudboard-config}
+          env:
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-secret
+                  key: DB_PASSWORD
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          startupProbe:
+            httpGet: {path: /healthz, port: 8001}
+            periodSeconds: 3
+            failureThreshold: 40
+          readinessProbe:
+            httpGet: {path: /readyz, port: 8001}
+            periodSeconds: 5
+            timeoutSeconds: 4
+          livenessProbe:
+            httpGet: {path: /healthz, port: 8001}
+            periodSeconds: 10
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {cpu: 500m, memory: 192Mi}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tasks
+  namespace: cloudboard
+spec:
+  selector: {app: tasks}
+  ports:
+    - port: 8001
+      targetPort: 8001
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: dashboard
+  namespace: cloudboard
+spec:
+  replicas: 2
+  selector:
+    matchLabels: {app: dashboard}
+  template:
+    metadata:
+      labels: {app: dashboard}
+    spec:
+      automountServiceAccountToken: false
+      securityContext:
+        runAsNonRoot: true
+        runAsUser: 10001
+        runAsGroup: 10001
+        seccompProfile: {type: RuntimeDefault}
+      containers:
+        - name: dashboard
+          image: __DASHBOARD_IMAGE__
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8000
+          env:
+            - name: TASKS_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: cloudboard-config
+                  key: TASKS_URL
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities: {drop: [ALL]}
+          volumeMounts:
+            - name: tmp
+              mountPath: /tmp
+          readinessProbe:
+            httpGet: {path: /readyz, port: 8000}
+            periodSeconds: 5
+          livenessProbe:
+            httpGet: {path: /healthz, port: 8000}
+            periodSeconds: 10
+          resources:
+            requests: {cpu: 50m, memory: 64Mi}
+            limits: {cpu: 500m, memory: 192Mi}
+      volumes:
+        - name: tmp
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: dashboard
+  namespace: cloudboard
+spec:
+  type: NodePort
+  selector: {app: dashboard}
+  ports:
+    - port: 80
+      targetPort: 8000
+      nodePort: 30080

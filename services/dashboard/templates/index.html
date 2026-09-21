@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cloudboard · Make room for progress</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script defer src="{{ url_for('static', filename='app.js') }}"></script>
+</head>
+<body>
+  <aside class="sidebar">
+    <a class="brand" href="/"><span class="brand-icon">c.</span>cloudboard</a>
+    <span class="eyebrow">WORKSPACE</span>
+    <div class="nav-active"><span>▦</span> Project board <span class="nav-dot"></span></div>
+    <div class="sidebar-note"><span class="tiny-dot"></span> A little clarity.<br>A lot more progress.</div>
+    <footer>PA2577 / Cloud Computing<br><span>Microservices project</span></footer>
+  </aside>
+  <main>
+    <header class="topbar"><span>Workspace <span class="slash">/</span> Project board</span><span class="avatar" aria-label="Demo workspace">CB</span></header>
+    <section class="content">
+      <div class="heading"><div><div class="eyebrow">YOUR WORK, AT A GLANCE</div><h1>Make room for progress<span>.</span></h1><p>A simple place to turn your next steps into things done.</p></div><button id="refresh" class="button secondary">↻ &nbsp; Refresh</button></div>
+      <div class="metrics" aria-label="Task summary">
+        <article><span>Total tasks</span><strong id="total">—</strong><small>Everything on your board</small></article>
+        <article><span>In progress</span><strong id="in-progress">—</strong><small>One step closer</small></article>
+        <article><span>Completed</span><strong id="done">—</strong><small>Small wins add up</small></article>
+        <article class="progress-metric"><span>Completion rate</span><strong id="rate">—</strong><progress id="progress" value="0" max="100" aria-label="Completion percentage"></progress></article>
+      </div>
+      <section class="create-panel" aria-labelledby="new-task-title"><div><h2 id="new-task-title">What’s next?</h2><p>Add a task and give it a place on the board.</p></div>
+        <form id="task-form"><label class="sr-only" for="title">Task title</label><input id="title" name="title" placeholder="e.g. Prepare the project demonstration" maxlength="160" required autocomplete="off"><label class="sr-only" for="priority">Priority</label><select id="priority" name="priority"><option value="medium">Medium priority</option><option value="high">High priority</option><option value="low">Low priority</option></select><button class="button primary" type="submit">＋ Add task</button></form>
+      </section>
+      <div id="message" role="status" aria-live="polite"></div>
+      <div class="board-heading"><h2>Your board <span id="task-count" class="count">0</span></h2><span>Focus on one next step.</span></div>
+      <section class="board" aria-label="Task board">
+        <div class="column"><div class="column-header"><h3><span class="status-dot todo"></span>To do</h3><span id="todo-count">0</span></div><div id="todo-list" class="task-list"></div></div>
+        <div class="column"><div class="column-header"><h3><span class="status-dot in_progress"></span>In progress</h3><span id="in_progress-count">0</span></div><div id="in_progress-list" class="task-list"></div></div>
+        <div class="column"><div class="column-header"><h3><span class="status-dot done"></span>Done</h3><span id="done-count">0</span></div><div id="done-list" class="task-list"></div></div>
+      </section>
+      <div class="bottom-note"><span id="sync-status">Connecting to your board…</span><span>Built for small steps & big ideas.</span></div>
+      <details class="diagnostics"><summary>Service diagnostics · for the project demonstration</summary><p id="instances">Waiting for a successful API response.</p><a href="/api/dashboard" target="_blank" rel="noopener">View REST API response ↗</a></details>
+    </section>
+  </main>
+</body>
+</html>
