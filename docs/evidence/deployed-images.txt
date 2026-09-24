@@ -1,6 +1,0 @@
-NAME                         IMAGE                                          DIGEST
-dashboard-5754998989-2nfcq   docker.io/runlinlong/cloudboard-dashboard:v1   docker.io/runlinlong/cloudboard-dashboard@sha256:6319dba587c548cc6241b0bb6978b3f54ab9b8694534350cfa63b16dd9588ca7
-dashboard-5754998989-ptwrn   docker.io/runlinlong/cloudboard-dashboard:v1   docker.io/runlinlong/cloudboard-dashboard@sha256:6319dba587c548cc6241b0bb6978b3f54ab9b8694534350cfa63b16dd9588ca7
-postgres-cf8c7fd8f-ccpr4     postgres:17-bookworm                           docker.io/library/postgres@sha256:639ab7ceb90e13123085b741fb31ef493fba25463002f6da665352e7b534b652
-tasks-5fb8499dff-g2gl9       docker.io/runlinlong/cloudboard-tasks:v1       docker.io/runlinlong/cloudboard-tasks@sha256:15748df963a28a82a9f4bfb3fc408bca5acb6dc08bffa04600a2c48790c3deb2
-tasks-5fb8499dff-gk2g6       docker.io/runlinlong/cloudboard-tasks:v1       docker.io/runlinlong/cloudboard-tasks@sha256:15748df963a28a82a9f4bfb3fc408bca5acb6dc08bffa04600a2c48790c3deb2
