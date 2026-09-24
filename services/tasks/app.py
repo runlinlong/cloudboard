@@ -32,7 +32,6 @@ def connect():
 
 
 def initialize_database():
-    # Serialize schema creation when several replicas start simultaneously.
     with connect() as conn:
         conn.execute("SELECT pg_advisory_xact_lock(2577001)")
         conn.execute("""

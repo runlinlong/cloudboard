@@ -38,7 +38,7 @@ function taskCard(task) {
   });
   top.append(badge, remove);
   const title = document.createElement("h4");
-  title.textContent = task.title; // User text never becomes executable HTML.
+  title.textContent = task.title;
   const footer = document.createElement("div");
   footer.className = "task-footer";
   const date = document.createElement("time");

@@ -1,4 +1,3 @@
-# Creates a new kind cluster only; Docker must already be healthy.
 $ErrorActionPreference = 'Stop'
 $projectRoot = Split-Path $PSScriptRoot -Parent
 Set-Location $projectRoot

@@ -23,7 +23,6 @@ try {
     $stillTasks = kubectl @kubeArgs get deployment tasks -o 'jsonpath={.spec.replicas}'
     if ($stillTasks -ne '3') { throw 'Task replica count unexpectedly changed' }
     Write-Host 'PASS: each application service scaled independently.'
-    # Only the database deployment IN THIS PROJECT is restarted.
     kubectl @kubeArgs rollout restart deployment/postgres
     if ($LASTEXITCODE -ne 0) { throw 'Postgres rollout restart failed' }
     kubectl @kubeArgs rollout status deployment/postgres --timeout=180s

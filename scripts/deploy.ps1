@@ -44,7 +44,6 @@ foreach ($name in @('postgres','tasks','dashboard')) {
     kubectl @kubeArgs -n cloudboard rollout status "deployment/$name" --timeout=180s
     if ($LASTEXITCODE -ne 0) { throw "$name not ready. Inspect pods and events; do not reset the cluster." }
 }
-# Protect the provisioned volume from automatic disposal when the claim is removed.
 $pv = kubectl @kubeArgs -n cloudboard get pvc postgres-data -o 'jsonpath={.spec.volumeName}'
 if ($LASTEXITCODE -ne 0 -or -not $pv) { throw 'Database PVC is not bound' }
 [System.IO.File]::WriteAllText((Join-Path $projectRoot '.local\retain-pv.json'), '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}')

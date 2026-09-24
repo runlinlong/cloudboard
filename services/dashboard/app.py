@@ -49,8 +49,6 @@ def upstream_error(error):
 
 
 def call_tasks(method, path, payload=None):
-    # Fixed destination and routes; this is not an arbitrary URL proxy.
-    # Bound waiting and do not retry writes, which could duplicate task creation.
     return requests.request(method, TASKS_URL + path, json=payload, timeout=(2, 5))
 
 
@@ -77,7 +75,6 @@ def health():
 
 @app.get("/readyz")
 def ready():
-    # Remain available to serve UI and friendly errors during upstream outages.
     return jsonify(status="ready")
 
 

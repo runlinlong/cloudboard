@@ -1,4 +1,3 @@
-# The database password is supplied by scripts/deploy.ps1, never committed here.
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -28,7 +27,6 @@ metadata:
   namespace: cloudboard
 spec:
   replicas: 1
-  # A single database process owns this data directory.
   strategy:
     type: Recreate
   selector:
